@@ -1,0 +1,1 @@
+CMD_OPTS="agent -bootstrap -server -config-dir /etc/consul.d -data-dir /var/lib/consul"
