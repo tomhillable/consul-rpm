@@ -1,2 +1,5 @@
 .vagrant/*
+BUILD/*
+RPMS/*
+SRPMS/*
 Vagrantfile
