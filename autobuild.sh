@@ -4,6 +4,7 @@
 RPM_BUILD_DIR="$HOME/rpmbuild"
 
 if [ ! -d "RPM_BUILD_DIR" ]; then
+	echo "$HOME/rpmbuild doesn't exist, creating"
 	rpmdev-setuptree
 	cp ./SPECS/consul.spec $HOME/rpmbuild/SPECS/
 	cp ./SOURCES/consul.service $HOME/rpmbuild/SOURCES/
