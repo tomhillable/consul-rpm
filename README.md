@@ -47,6 +47,8 @@ To build the RPM (non-root user):
     ```
 8.  (Optional) Automated build script
 
+	 To simplify all steps above into a single script, autobuild.sh was created. 
+
     ```
 	 chmod u+x autobuild.sh
     ./autobuild.sh
