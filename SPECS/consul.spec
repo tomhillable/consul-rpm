@@ -16,6 +16,7 @@ BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRequires:  systemd-units
 Requires:       systemd
 %endif
+Requires(pre): shadow-utils
 
 %description
 Consul is a tool for service discovery and configuration. Consul is distributed, highly available, and extremely scalable.
@@ -45,6 +46,13 @@ mkdir -p %{buildroot}/%{_initrddir}
 cp %{SOURCE3} %{buildroot}/%{_initrddir}/consul
 %endif
 
+%pre
+getent group consul >/dev/null || groupadd -r consul
+getent passwd consul >/dev/null || \
+    useradd -r -g consul -d /var/lib/consul -s /sbin/nologin \
+    -c "consul.io user" consul
+exit 0
+
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
 %post
 %systemd_post %{name}.service
@@ -71,9 +79,9 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%{_sysconfdir}/%{name}.d
+%attr(750, root, consul) %{_sysconfdir}/%{name}.d
 %{_sysconfdir}/sysconfig/%{name}
-%{_sharedstatedir}/%{name}
+%attr(750, consul, consul) %{_sharedstatedir}/%{name}
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
 %{_unitdir}/%{name}.service
 %else

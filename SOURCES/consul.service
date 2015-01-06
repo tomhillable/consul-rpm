@@ -3,6 +3,8 @@ Description=Consul is a tool for service discovery and configuration. Consul is 
 Documentation=http://www.consul.io
 
 [Service]
+User=consul
+Group=consul
 EnvironmentFile=-/etc/sysconfig/consul
 ExecStart=/usr/bin/consul $CMD_OPTS
 ExecReload=/bin/kill -HUP $MAINPID
