@@ -37,14 +37,14 @@ export GOMAXPROCS=${GOMAXPROCS:-2}
 
 start() {
     [ -x $exec ] || exit 5
-    
+
     umask 077
 
     touch $logfile $pidfile
     chown $user:$user $logfile $pidfile
 
     echo -n $"Starting $prog: "
-    
+
     ## holy shell shenanigans, batman!
     ## daemon can't be backgrounded.  we need the pid of the spawned process,
     ## which is actually done via runuser thanks to --user.  you can't do "cmd
@@ -53,12 +53,12 @@ start() {
         --pidfile=$pidfile \
         --user=$user \
         " { $exec $CMD_OPTS &>> $logfile & } ; echo \$! >| $pidfile "
-    
+
     RETVAL=$?
     echo
-    
+
     [ $RETVAL -eq 0 ] && touch $lockfile
-    
+
     return $RETVAL
 }
 
