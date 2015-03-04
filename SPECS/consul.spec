@@ -10,6 +10,7 @@ Source0:        https://dl.bintray.com/mitchellh/consul/%{version}_linux_amd64.z
 Source1:        %{name}.sysconfig
 Source2:        %{name}.service
 Source3:        %{name}.init
+Source4:        https://dl.bintray.com/mitchellh/consul/%{version}_web_ui.zip
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
@@ -37,6 +38,8 @@ mkdir -p %{buildroot}/%{_sysconfdir}/%{name}.d
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig
 cp %{SOURCE1} %{buildroot}/%{_sysconfdir}/sysconfig/%{name}
 mkdir -p %{buildroot}/%{_sharedstatedir}/%{name}
+unzip %{SOURCE4} -d %{buildroot}/%{_sharedstatedir}/%{name}/
+mv %{buildroot}/%{_sharedstatedir}/%{name}/dist %{buildroot}/%{_sharedstatedir}/%{name}/ui
 
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
 mkdir -p %{buildroot}/%{_unitdir}
