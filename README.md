@@ -45,6 +45,15 @@ To build the RPM (non-root user):
     ```
     sudo mock -r fedora-19-x86_64 --resultdir rpmbuild/RPMS/x86_64/ rpmbuild/SRPMS/consul-0.2.0-1.fc20.src.rpm 
     ```
+8.  (Optional) Automated build script
+
+	 To simplify all steps above into a single script, autobuild.sh was created. 
+
+    ```
+	 chmod u+x autobuild.sh
+    ./autobuild.sh
+    ```
+
 
 To run
 ---------------
