@@ -55,6 +55,9 @@ Two RPMS: one each for the Consul binary and the WebUI.
   * Add `-bootstrap` **only** if this is the first server and instance.
 * Start the service and tail the logs `systemctl start consul.service` and `journalctl -f`.
   * To enable at reboot `systemctl enable consul.service`.
+* Consul may complain about the `GOMAXPROCS` setting. This is safe to ignore;
+  however, the warning can be supressed by uncommenting the appropriate line in
+  `/etc/sysconfig/consul`.
 
 ## Config
 

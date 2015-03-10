@@ -45,7 +45,7 @@ mkdir -p %{buildroot}/%{_bindir}
 cp consul %{buildroot}/%{_bindir}
 mkdir -p %{buildroot}/%{_sysconfdir}/%{name}
 cp %{SOURCE5} %{buildroot}/%{_sysconfdir}/%{name}/consul.json-dist
-cp %{SOURCE6} %{buildroot}/%{_sysconfdir}/%{name}/consul-ui.json-dist
+cp %{SOURCE6} %{buildroot}/%{_sysconfdir}/%{name}/
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig
 cp %{SOURCE1} %{buildroot}/%{_sysconfdir}/sysconfig/%{name}
 mkdir -p %{buildroot}/%{_sharedstatedir}/%{name}
@@ -106,7 +106,7 @@ rm -rf %{buildroot}
 
 %files ui
 %attr(-, root, consul) %{_prefix}/share/%{name}-ui
-%attr(640, root, consul) %{_sysconfdir}/%{name}/consul-ui.json-dist
+%attr(640, root, consul) %{_sysconfdir}/%{name}/consul-ui.json
 
 
 %doc
@@ -114,7 +114,7 @@ rm -rf %{buildroot}
 
 %changelog
 * Mon Mar 9 2015 Dan <phrawzty@mozilla.com>
-- Reduce runtime assumptions
+- Internal maintenance (bump release)
 
 * Fri Mar 6 2015 mh <mh@immerda.ch>
 - update to 0.5.0
