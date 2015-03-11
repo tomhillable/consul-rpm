@@ -49,7 +49,7 @@ cp %{SOURCE6} %{buildroot}/%{_sysconfdir}/%{name}/
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig
 cp %{SOURCE1} %{buildroot}/%{_sysconfdir}/sysconfig/%{name}
 mkdir -p %{buildroot}/%{_sharedstatedir}/%{name}
-mkdir -p %{buildroot}/%{_prefix}/share/%{name}-ui
+mkdir -p %{buildroot}/%{_datadir}/%{name}-ui
 cp -r dist/* %{buildroot}/%{_prefix}/share/%{name}-ui
 
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
@@ -105,7 +105,7 @@ rm -rf %{buildroot}
 %attr(755, root, root) %{_bindir}/consul
 
 %files ui
-%attr(-, root, consul) %{_prefix}/share/%{name}-ui
+%config(noreplace) %attr(-, root, consul) %{_prefix}/share/%{name}-ui
 %attr(640, root, consul) %{_sysconfdir}/%{name}/consul-ui.json
 
 
