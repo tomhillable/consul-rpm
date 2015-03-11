@@ -1,16 +1,18 @@
 Name:           consul
 Version:        0.5.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Consul is a tool for service discovery and configuration. Consul is distributed, highly available, and extremely scalable.
 
 Group:          System Environment/Daemons
 License:        MPLv2.0
 URL:            http://www.consul.io
-Source0:        https://dl.bintray.com/mitchellh/consul/%{version}_linux_amd64.zip
+Source0:        https://dl.bintray.com/mitchellh/%{name}/%{version}_linux_amd64.zip
 Source1:        %{name}.sysconfig
 Source2:        %{name}.service
 Source3:        %{name}.init
-Source4:        https://dl.bintray.com/mitchellh/consul/%{version}_web_ui.zip
+Source4:        https://dl.bintray.com/mitchellh/%{name}/%{version}_web_ui.zip
+Source5:        %{name}.json
+Source6:        %{name}-ui.json
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
@@ -36,19 +38,19 @@ Consul provides several key features:
 Consul comes with support for a beautiful, functional web UI. The UI can be used for viewing all services and nodes, viewing all health checks and their current status, and for reading and setting key/value data. The UI automatically supports multi-datacenter.
 
 %prep
-%setup -q -c
+%setup -q -c -b 4
 
 %install
 mkdir -p %{buildroot}/%{_bindir}
 cp consul %{buildroot}/%{_bindir}
-mkdir -p %{buildroot}/%{_sysconfdir}/%{name}.d
+mkdir -p %{buildroot}/%{_sysconfdir}/%{name}
+cp %{SOURCE5} %{buildroot}/%{_sysconfdir}/%{name}/consul.json-dist
+cp %{SOURCE6} %{buildroot}/%{_sysconfdir}/%{name}/
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig
 cp %{SOURCE1} %{buildroot}/%{_sysconfdir}/sysconfig/%{name}
 mkdir -p %{buildroot}/%{_sharedstatedir}/%{name}
-unzip %{SOURCE4}
-mv dist %{buildroot}/%{_sharedstatedir}/%{name}-ui
-rm %{buildroot}/%{_sharedstatedir}/%{name}-ui/.gitkeep
-echo '{ "ui_dir": "/var/lib/consul-ui" }' > %{buildroot}/%{_sysconfdir}/%{name}.d/ui.json
+mkdir -p %{buildroot}/%{_datadir}/%{name}-ui
+cp -r dist/* %{buildroot}/%{_prefix}/share/%{name}-ui
 
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
 mkdir -p %{buildroot}/%{_unitdir}
@@ -91,7 +93,8 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%dir %attr(750, root, consul) %{_sysconfdir}/%{name}.d
+%dir %attr(750, root, consul) %{_sysconfdir}/%{name}
+%attr(640, root, consul) %{_sysconfdir}/%{name}/consul.json-dist
 %dir %attr(750, consul, consul) %{_sharedstatedir}/%{name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
@@ -102,14 +105,17 @@ rm -rf %{buildroot}
 %attr(755, root, root) %{_bindir}/consul
 
 %files ui
-%attr(-, root, consul) %{_sharedstatedir}/%{name}-ui
-%config(noreplace) %attr(640, root, consul) %{_sysconfdir}/%{name}.d/ui.json
+%config(noreplace) %attr(-, root, consul) %{_prefix}/share/%{name}-ui
+%attr(640, root, consul) %{_sysconfdir}/%{name}/consul-ui.json
+
 
 %doc
 
 
-
 %changelog
+* Mon Mar 9 2015 Dan <phrawzty@mozilla.com>
+- Internal maintenance (bump release)
+
 * Fri Mar 6 2015 mh <mh@immerda.ch>
 - update to 0.5.0
 - fix SysV init on restart

@@ -1,60 +1,69 @@
-RPM Spec for Consul
-======================
+# RPM Spec for Consul
 
 Tries to follow the [packaging guidelines](https://fedoraproject.org/wiki/Packaging:Guidelines) from Fedora.
 
 * Binary: `/usr/bin/consul`
-* Config: `/etc/consul.d/`
+* Config: `/etc/consul/`
+* Shared state: `/var/lib/consul/`
 * Sysconfig: `/etc/sysconfig/consul`
+* WebUI: `/usr/share/consul/`
 
-To Build
----------
+# Build
 
-To build the RPM (non-root user):
+Build the RPM as a non-root user from your home directory:
 
-1. Check out this repo
-2. Install rpmdevtools and mock 
+* Check out this repo. Seriously - check it out. Nice.
+    ```
+    git clone <this_repo_url>
+    ```
 
+* Install `rpmdevtools` and `mock`.
     ```
     sudo yum install rpmdevtools mock
     ```
-3. Set up your rpmbuild directory tree
 
+* Set up your rpmbuild directory tree.
     ```
     rpmdev-setuptree
     ```
-4. Link the spec file and sources from the repository into your rpmbuild/SOURCES directory
 
+* Link the spec file and sources.
     ```
-    ln -s ${repo}/SPECS/consul.spec rpmbuild/SPECS/
-    ln -s ${repo}/SOURCES/* rpmbuild/SOURCES/
+    ln -s $HOME/consul-rpm/SPECS/consul.spec rpmbuild/SPECS/
+    find $HOME/consul-rpm/SOURCES -type f -exec ln -s {} rpmbuild/SOURCES/ \;
     ```
-5. Download remote source files
 
+* Download remote source files
     ```
     spectool -g -R rpmbuild/SPECS/consul.spec
     ```
-6. Build the RPM
 
+* Build the RPM
     ```
     rpmbuild -ba rpmbuild/SPECS/consul.spec
     ```
 
-7. (Optional) Build for another Fedora release
+## Result
 
-    ```
-    sudo mock -r fedora-19-x86_64 --resultdir rpmbuild/RPMS/x86_64/ rpmbuild/SRPMS/consul-0.2.0-1.fc20.src.rpm 
-    ```
+Two RPMS: one each for the Consul binary and the WebUI.
 
-To run
----------------
+# Run
 
-1. Install the rpm
-2. Put config files in `/etc/consul.d/`
-3. Change command line arguments to consul in `/etc/sysconfig/consul`. **Note:** You should remove `-bootstrap` if this isn't the first server.
-4. Start the service and tail the logs `systemctl start consul.service` and `journalctl -f`
-  * To enable at reboot `systemctl enable consul.service`
+* Install the RPM.
+* Put config files in `/etc/consul/`.
+* Change command line arguments to consul in `/etc/sysconfig/consul`.
+  * Add `-bootstrap` **only** if this is the first server and instance.
+* Start the service and tail the logs `systemctl start consul.service` and `journalctl -f`.
+  * To enable at reboot `systemctl enable consul.service`.
+* Consul may complain about the `GOMAXPROCS` setting. This is safe to ignore;
+  however, the warning can be supressed by uncommenting the appropriate line in
+  `/etc/sysconfig/consul`.
 
-More info
----------
+## Config
+
+Config files are loaded in lexicographical order from the `config-dir`. Some
+sample configs are provided.
+
+# More info
+
 See the [consul.io](http://www.consul.io) website.
