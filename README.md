@@ -29,16 +29,25 @@ Build the RPM as a non-root user from your home directory:
 
 * Link the spec file and sources.
     ```
-    ln -s $HOME/consul-rpm/SPECS/consul.spec rpmbuild/SPECS/
-    find $HOME/consul-rpm/SOURCES -type f -exec ln -s {} rpmbuild/SOURCES/ \;
+    ln -s $HOME/consul-rpm/SPECS/consul.spec $HOME/rpmbuild/SPECS/
+    find $HOME/consul-rpm/SOURCES -type f -exec ln -s {} $HOME/rpmbuild/SOURCES/ \;
     ```
 
-* Download remote source files
+* Download remote source files.
     ```
     spectool -g -R rpmbuild/SPECS/consul.spec
     ```
 
-* Build the RPM
+* Spectool may fail if your distribution has an older version of cURL (CentOS
+  6.x, for example) - if so, use Wget instead.
+    ```
+    VER=`grep Version rpmbuild/SPECS/consul.spec | awk '{print $2}'`
+    URL='https://dl.bintray.com/mitchellh/consul'
+    wget $URL/${VER}_linux_amd64.zip -O $HOME/rpmbuild/SOURCES/${VER}_linux_amd64.zip
+    wget $URL/${VER}_web_ui.zip -O $HOME/rpmbuild/SOURCES/${VER}_web_ui.zip
+    ```
+
+* Build the RPM.
     ```
     rpmbuild -ba rpmbuild/SPECS/consul.spec
     ```
