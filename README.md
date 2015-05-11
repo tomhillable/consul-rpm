@@ -10,17 +10,19 @@ Tries to follow the [packaging guidelines](https://fedoraproject.org/wiki/Packag
 
 # Build
 
-If you have Vagrant installed, you can just check this repo out and do:
+If you have Vagrant installed:
 
-* Check out this repo.
+* Check out this repo.  
     ```
     git clone https://github.com/tomhillable/consul-rpm
     ```
-* Edit Vagrantfile to point to your favourite box (Bento CentOS7 in this example).
+    
+* Edit Vagrantfile to point to your favourite box (Bento CentOS7 in this example).  
     ```
     config.vm.box = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box"
     ```
-* Vagrant up!
+    
+* Vagrant up! The rpms will be copied to working directory after provisioning.  
     ```
     vagrant up
     ```
