@@ -10,7 +10,22 @@ Tries to follow the [packaging guidelines](https://fedoraproject.org/wiki/Packag
 
 # Build
 
-Build the RPM as a non-root user from your home directory:
+If you have Vagrant installed, you can just check this repo out and do:
+
+* Check out this repo.
+    ```
+    git clone https://github.com/tomhillable/consul-rpm
+    ```
+* Edit Vagrantfile to point to your favourite box (Bento CentOS7 in this example).
+    ```
+    config.vm.box = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box"
+    ```
+* Vagrant up!
+    ```
+    vagrant up
+    ```
+
+Or, do it manually by building the RPM as a non-root user from your home directory:
 
 * Check out this repo. Seriously - check it out. Nice.
     ```
