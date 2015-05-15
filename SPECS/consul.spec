@@ -1,6 +1,6 @@
 Name:           consul
-Version:        0.5.0
-Release:        2%{?dist}
+Version:        0.5.1
+Release:        1%{?dist}
 Summary:        Consul is a tool for service discovery and configuration. Consul is distributed, highly available, and extremely scalable.
 
 Group:          System Environment/Daemons
@@ -113,6 +113,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri May 15 2015 Dan <phrawzty@mozilla.com>
+- Bump to v0.5.1
+
 * Mon Mar 9 2015 Dan <phrawzty@mozilla.com>
 - Internal maintenance (bump release)
 
