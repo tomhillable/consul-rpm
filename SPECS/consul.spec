@@ -1,5 +1,5 @@
 Name:           consul
-Version:        0.5.1
+Version:        0.5.2
 Release:        1%{?dist}
 Summary:        Consul is a tool for service discovery and configuration. Consul is distributed, highly available, and extremely scalable.
 
@@ -113,6 +113,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue May 19 2015 nathan r. hruby <nhruby@gmail.com>
+- Bump to v0.5.2
+
 * Fri May 15 2015 Dan <phrawzty@mozilla.com>
 - Bump to v0.5.1
 
