@@ -23,7 +23,7 @@ Requires(pre): shadow-utils
 
 %package ui
 Summary: Consul Web UI
-Requires: consul
+Requires: consul = %{version}
 
 %description
 Consul is a tool for service discovery and configuration. Consul is distributed, highly available, and extremely scalable.
