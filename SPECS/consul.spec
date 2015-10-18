@@ -1,6 +1,6 @@
 Name:           consul
 Version:        0.5.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Consul is a tool for service discovery and configuration. Consul is distributed, highly available, and extremely scalable.
 
 Group:          System Environment/Daemons
@@ -13,11 +13,14 @@ Source3:        %{name}.init
 Source4:        https://dl.bintray.com/mitchellh/%{name}/%{version}_web_ui.zip
 Source5:        %{name}.json
 Source6:        %{name}-ui.json
+Source7:        %{name}.logrotate
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
 BuildRequires:  systemd-units
 Requires:       systemd
+%else
+Requires:       logrotate
 %endif
 Requires(pre): shadow-utils
 
@@ -57,7 +60,9 @@ mkdir -p %{buildroot}/%{_unitdir}
 cp %{SOURCE2} %{buildroot}/%{_unitdir}/
 %else
 mkdir -p %{buildroot}/%{_initrddir}
+mkdir -p %{buildroot}/%{_sysconfdir}/logrotate.d
 cp %{SOURCE3} %{buildroot}/%{_initrddir}/consul
+cp %{SOURCE7} %{buildroot}/%{_sysconfdir}/logrotate.d/%{name}
 %endif
 
 %pre
@@ -101,6 +106,7 @@ rm -rf %{buildroot}
 %{_unitdir}/%{name}.service
 %else
 %{_initrddir}/%{name}
+%{_sysconfdir}/logrotate.d/%{name}
 %endif
 %attr(755, root, root) %{_bindir}/consul
 
@@ -113,6 +119,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sun Oct 18 2015 mh <mh@immerda.ch>
+- logrotate logfile on EL6 - fixes #14 & #15
+
 * Tue May 19 2015 nathan r. hruby <nhruby@gmail.com>
 - Bump to v0.5.2
 
