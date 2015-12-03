@@ -16,16 +16,31 @@ If you have Vagrant installed:
     ```
     git clone https://github.com/tomhillable/consul-rpm
     ```
-    
+
 * Edit Vagrantfile to point to your favourite box (Bento CentOS7 in this example).  
     ```
     config.vm.box = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box"
     ```
-    
+
 * Vagrant up! The rpms will be copied to working directory after provisioning.  
     ```
     vagrant up
     ```
+
+If you prefer building it with docker:
+
+* Build the docker image
+    Amend the ```Dockerfile``` header if you want a specific OS build. Default is centos7
+    ```
+    docker build -t consul:build .
+    ```
+
+* Run the build
+    ```
+    docker run -v $HOME/consul-rpms:/RPMs consul:build
+    ```
+
+* Retrieve the built RPMs from ```$HOME/consul-rpms```
 
 Or, do it manually by building the RPM as a non-root user from your home directory:
 
