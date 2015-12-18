@@ -1,6 +1,6 @@
 Name:           consul
-Version:        0.5.2
-Release:        2%{?dist}
+Version:        0.6.0
+Release:        1%{?dist}
 Summary:        Consul is a tool for service discovery and configuration. Consul is distributed, highly available, and extremely scalable.
 
 Group:          System Environment/Daemons
@@ -53,7 +53,7 @@ mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig
 cp %{SOURCE1} %{buildroot}/%{_sysconfdir}/sysconfig/%{name}
 mkdir -p %{buildroot}/%{_sharedstatedir}/%{name}
 mkdir -p %{buildroot}/%{_datadir}/%{name}-ui
-cp -r dist/* %{buildroot}/%{_prefix}/share/%{name}-ui
+cp -r index.html static %{buildroot}/%{_prefix}/share/%{name}-ui
 
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
 mkdir -p %{buildroot}/%{_unitdir}
@@ -119,6 +119,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Dec 11 2015 mh <mh@immerda.ch>
+- Bump to v0.6
+
 * Sun Oct 18 2015 mh <mh@immerda.ch>
 - logrotate logfile on EL6 - fixes #14 & #15
 

@@ -8,6 +8,13 @@ Tries to follow the [packaging guidelines](https://fedoraproject.org/wiki/Packag
 * Sysconfig: `/etc/sysconfig/consul`
 * WebUI: `/usr/share/consul/`
 
+# Using
+
+Either you can build the RPMs on your own using the SPEC file in this repository
+or you can use the builded RPMs hosted on copr by one of the maintainers.
+
+See the [copr-project site](https://copr.fedoraproject.org/coprs/duritong/consul/) for more information on how to use the repository.
+
 # Build
 
 If you have Vagrant installed:
