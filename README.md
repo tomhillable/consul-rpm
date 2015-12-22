@@ -8,24 +8,19 @@ Tries to follow the [packaging guidelines](https://fedoraproject.org/wiki/Packag
 * Sysconfig: `/etc/sysconfig/consul`
 * WebUI: `/usr/share/consul/`
 
+# Using
+
+Create the RPMs using one of the techniques outlined in the Build section below.
+
+## Pre-built packages
+
+Pre-built packages are maintained via the [Fedora Copr](https://copr.fedoraproject.org/coprs/) system. For more information, please see the [duritong/consul](https://copr.fedoraproject.org/coprs/duritong/consul/) repository on Copr.
+
 # Build
 
-If you have Vagrant installed:
+There are various methods how you can build the consul & consul-ui RPMs, currently we have Manual & Vagrant based builds documented.
 
-* Check out this repo.  
-    ```
-    git clone https://github.com/tomhillable/consul-rpm
-    ```
-    
-* Edit Vagrantfile to point to your favourite box (Bento CentOS7 in this example).  
-    ```
-    config.vm.box = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box"
-    ```
-    
-* Vagrant up! The rpms will be copied to working directory after provisioning.  
-    ```
-    vagrant up
-    ```
+## Manual
 
 Or, do it manually by building the RPM as a non-root user from your home directory:
 
@@ -60,13 +55,32 @@ Or, do it manually by building the RPM as a non-root user from your home directo
     ```
     VER=`grep Version rpmbuild/SPECS/consul.spec | awk '{print $2}'`
     URL='https://dl.bintray.com/mitchellh/consul'
-    wget $URL/${VER}_linux_amd64.zip -O $HOME/rpmbuild/SOURCES/${VER}_linux_amd64.zip
-    wget $URL/${VER}_web_ui.zip -O $HOME/rpmbuild/SOURCES/${VER}_web_ui.zip
+    wget $URL/consul_${VER}_linux_amd64.zip -O $HOME/rpmbuild/SOURCES/consul_${VER}_linux_amd64.zip
+    wget $URL/consul_${VER}_web_ui.zip -O $HOME/rpmbuild/SOURCES/consul_${VER}_web_ui.zip
     ```
 
 * Build the RPM.
     ```
     rpmbuild -ba rpmbuild/SPECS/consul.spec
+    ```
+
+## Vagrant
+
+If you have Vagrant installed:
+
+* Check out this repo.
+    ```
+    git clone https://github.com/tomhillable/consul-rpm
+    ```
+
+* Edit Vagrantfile to point to your favourite box (Bento CentOS7 in this example).
+    ```
+    config.vm.box = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box"
+    ```
+
+* Vagrant up! The rpms will be copied to working directory after provisioning.
+    ```
+    vagrant up
     ```
 
 ## Result
