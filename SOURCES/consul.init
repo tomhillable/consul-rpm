@@ -87,8 +87,8 @@ start() {
 
 stop() {
     echo -n $"Shutting down $prog: "
-    ## graceful shutdown with leave
-    $exec leave > /dev/null 2>&1
+		## graceful shutdown with SIGINT
+		killproc -p $pidfile $exec -INT
     RETVAL=$?
 
     if [ $RETVAL -eq 0 ]; then
