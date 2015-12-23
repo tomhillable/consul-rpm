@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # consul        Manage the consul agent
-#       
+#
 # chkconfig:   2345 95 95
 # description: Consul is a tool for service discovery and configuration
 # processname: consul
@@ -34,6 +34,7 @@ logfile="/var/log/$prog"
 [ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
 
 export GOMAXPROCS=${GOMAXPROCS:-2}
+export MAXWAIT=${MAXWAIT:-10}
 
 start() {
     [ -x $exec ] || exit 5
@@ -55,10 +56,32 @@ start() {
         " { $exec $CMD_OPTS &>> $logfile & } ; echo \$! >| $pidfile "
 
     RETVAL=$?
-    echo
 
     [ $RETVAL -eq 0 ] && touch $lockfile
 
+    local pid=$(< ${pidfile})
+    local curwait=0
+    local ready=0
+
+    while checkpid ${pid} && [ $curwait -lt ${MAXWAIT} ] && [ $ready -ne 1 ]; do
+        if netstat -nptl | grep -q "^tcp.*:8400.*LISTEN \+${pid}\/${prog}"; then
+            ready=1
+        else
+           sleep 1
+        fi
+
+        (( count++ ))
+    done
+
+    if [ $ready -eq 1 ]; then
+        RETVAL=0
+        success
+    else
+       RETVAL=1
+       failure
+    fi
+
+    echo
     return $RETVAL
 }
 
@@ -67,8 +90,35 @@ stop() {
     ## graceful shutdown with SIGINT
     killproc -p $pidfile $exec -INT
     RETVAL=$?
+
+    if [ $RETVAL -eq 0 ]; then
+        local pid=$(< ${pidfile})
+        local curwait=0
+        local shut=0
+
+        while [ $curwait -lt ${MAXWAIT} ] && [ $shut -ne 1 ]; do
+            if ! checkpid ${pid}; then
+                shut=1
+            else
+                sleep 1
+            fi
+
+            (( count++ ))
+        done
+
+        if [ $shut -ne 1 ]; then
+            RETVAL=125
+        fi
+    fi
+
+    if [ $RETVAL -eq 0 ]; then
+        rm -f $lockfile $pidfile
+        success
+    else
+        failure
+    fi
+
     echo
-    [ $RETVAL -eq 0 ] && rm -f $lockfile $pidfile
     return $RETVAL
 }
 
