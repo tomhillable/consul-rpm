@@ -34,7 +34,7 @@ logfile="/var/log/$prog"
 [ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
 
 export GOMAXPROCS=${GOMAXPROCS:-2}
-export MAXWAIT=${MAXWAIT:-60}
+export MAXWAIT=${MAXWAIT:-10}
 
 start() {
     [ -x $exec ] || exit 5
