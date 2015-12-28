@@ -83,6 +83,24 @@ If you have Vagrant installed:
     vagrant up
     ```
 
+## Docker
+
+If you prefer building it with docker:
+
+* Build the docker image
+    Amend the ```Dockerfile``` header if you want a specific OS build. Default is centos7
+    ```
+    docker build -t consul:build .
+    ```
+
+* Run the build
+    ```
+    docker run -v $HOME/consul-rpms:/RPMS consul:build
+    ```
+
+* Retrieve the built RPMs from ```$HOME/consul-rpms```
+
+
 ## Result
 
 Two RPMS: one each for the Consul binary and the WebUI.
