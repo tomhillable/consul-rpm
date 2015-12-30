@@ -18,11 +18,16 @@ Pre-built packages are maintained via the [Fedora Copr](https://copr.fedoraproje
 
 # Build
 
-There are various methods how you can build the consul & consul-ui RPMs, currently we have Manual & Vagrant based builds documented.
+There are a number of ways to build the `consul` and `consul-ui` RPMs:
+* Manual
+* Vagrant
+* Docker
+
+Each method ultimately does the same thing - pick the one that is most comfortable for you.
 
 ## Manual
 
-Or, do it manually by building the RPM as a non-root user from your home directory:
+Build the RPM as a non-root user from your home directory:
 
 * Check out this repo. Seriously - check it out. Nice.
     ```
@@ -34,7 +39,7 @@ Or, do it manually by building the RPM as a non-root user from your home directo
     sudo yum install rpmdevtools mock
     ```
 
-* Set up your rpmbuild directory tree.
+* Set up your `rpmbuild` directory tree.
     ```
     rpmdev-setuptree
     ```
@@ -73,35 +78,33 @@ If you have Vagrant installed:
     git clone https://github.com/tomhillable/consul-rpm
     ```
 
-* Edit Vagrantfile to point to your favourite box (Bento CentOS7 in this example).
+* Edit `Vagrantfile` to point to your favourite box (Bento CentOS7 in this example).
     ```
     config.vm.box = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box"
     ```
 
-* Vagrant up! The rpms will be copied to working directory after provisioning.
+* Vagrant up! The RPMs will be copied to working directory after provisioning.
     ```
     vagrant up
     ```
 
 ## Docker
 
-If you prefer building it with docker:
+If you prefer building it with Docker:
 
-* Build the docker image
-    Amend the ```Dockerfile``` header if you want a specific OS build. Default is centos7
+* Build the Docker image. Note that you must amend the `Dockerfile` header if you want a specific OS build (default is `centos7`).
     ```
     docker build -t consul:build .
     ```
 
-* Run the build
+* Run the build.
     ```
     docker run -v $HOME/consul-rpms:/RPMS consul:build
     ```
 
-* Retrieve the built RPMs from ```$HOME/consul-rpms```
+* Retrieve the built RPMs from `$HOME/consul-rpms`.
 
-
-## Result
+# Result
 
 Two RPMS: one each for the Consul binary and the WebUI.
 
