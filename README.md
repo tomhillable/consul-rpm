@@ -106,7 +106,7 @@ If you prefer building it with Docker:
 
 # Result
 
-Two RPMS: one each for the Consul binary and the WebUI.
+Two RPMs: one each for the Consul binary and the WebUI.
 
 # Run
 
