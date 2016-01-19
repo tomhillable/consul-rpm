@@ -1,5 +1,11 @@
+%if 0%{?_version:1}
+%define         _verstr      %{_version}
+%else
+%define         _verstr      0.6.0
+%endif
+
 Name:           consul
-Version:        0.6.0
+Version:        %{_verstr}
 Release:        1%{?dist}
 Summary:        Consul is a tool for service discovery and configuration. Consul is distributed, highly available, and extremely scalable.
 
