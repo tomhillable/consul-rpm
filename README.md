@@ -25,6 +25,14 @@ There are a number of ways to build the `consul` and `consul-ui` RPMs:
 
 Each method ultimately does the same thing - pick the one that is most comfortable for you.
 
+### Version
+
+The version number is hardcoded into the SPEC, however should you so choose, it can be set explicitly by passing an argument to `rpmbuild` directly:
+
+```
+$ rpmbuild --define "_version 0.6.3"
+```
+
 ## Manual
 
 Build the RPM as a non-root user from your home directory:
