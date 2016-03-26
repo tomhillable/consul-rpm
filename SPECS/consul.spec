@@ -33,6 +33,7 @@ Requires(pre): shadow-utils
 %package ui
 Summary: Consul Web UI
 Requires: consul = %{version}
+BuildArch: noarch
 
 %description
 Consul is a tool for service discovery and configuration. Consul is distributed, highly available, and extremely scalable.
