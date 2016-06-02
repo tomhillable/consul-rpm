@@ -1,27 +1,39 @@
+%if 0%{?_version:1}
+%define         _verstr      %{_version}
+%else
+%define         _verstr      0.6.3
+%endif
+
 Name:           consul
-Version:        0.5.0
+Version:        %{_verstr}
 Release:        1%{?dist}
 Summary:        Consul is a tool for service discovery and configuration. Consul is distributed, highly available, and extremely scalable.
 
 Group:          System Environment/Daemons
 License:        MPLv2.0
 URL:            http://www.consul.io
-Source0:        https://dl.bintray.com/mitchellh/consul/%{version}_linux_amd64.zip
+Source0:        https://releases.hashicorp.com/%{name}/%{version}/%{name}_%{version}_linux_amd64.zip
 Source1:        %{name}.sysconfig
 Source2:        %{name}.service
 Source3:        %{name}.init
-Source4:        https://dl.bintray.com/mitchellh/consul/%{version}_web_ui.zip
+Source4:        https://releases.hashicorp.com/%{name}/%{version}/%{name}_%{version}_web_ui.zip
+Source5:        %{name}.json
+Source6:        %{name}-ui.json
+Source7:        %{name}.logrotate
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
 BuildRequires:  systemd-units
 Requires:       systemd
+%else
+Requires:       logrotate
 %endif
 Requires(pre): shadow-utils
 
 %package ui
 Summary: Consul Web UI
-Requires: consul
+Requires: consul = %{version}
+BuildArch: noarch
 
 %description
 Consul is a tool for service discovery and configuration. Consul is distributed, highly available, and extremely scalable.
@@ -36,26 +48,28 @@ Consul provides several key features:
 Consul comes with support for a beautiful, functional web UI. The UI can be used for viewing all services and nodes, viewing all health checks and their current status, and for reading and setting key/value data. The UI automatically supports multi-datacenter.
 
 %prep
-%setup -q -c
+%setup -q -c -b 4
 
 %install
 mkdir -p %{buildroot}/%{_bindir}
 cp consul %{buildroot}/%{_bindir}
-mkdir -p %{buildroot}/%{_sysconfdir}/%{name}.d
+mkdir -p %{buildroot}/%{_sysconfdir}/%{name}
+cp %{SOURCE5} %{buildroot}/%{_sysconfdir}/%{name}/consul.json-dist
+cp %{SOURCE6} %{buildroot}/%{_sysconfdir}/%{name}/
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig
 cp %{SOURCE1} %{buildroot}/%{_sysconfdir}/sysconfig/%{name}
 mkdir -p %{buildroot}/%{_sharedstatedir}/%{name}
-unzip %{SOURCE4}
-mv dist %{buildroot}/%{_sharedstatedir}/%{name}-ui
-rm %{buildroot}/%{_sharedstatedir}/%{name}-ui/.gitkeep
-echo '{ "ui_dir": "/var/lib/consul-ui" }' > %{buildroot}/%{_sysconfdir}/%{name}.d/ui.json
+mkdir -p %{buildroot}/%{_datadir}/%{name}-ui
+cp -r index.html static %{buildroot}/%{_prefix}/share/%{name}-ui
 
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
 mkdir -p %{buildroot}/%{_unitdir}
 cp %{SOURCE2} %{buildroot}/%{_unitdir}/
 %else
 mkdir -p %{buildroot}/%{_initrddir}
+mkdir -p %{buildroot}/%{_sysconfdir}/logrotate.d
 cp %{SOURCE3} %{buildroot}/%{_initrddir}/consul
+cp %{SOURCE7} %{buildroot}/%{_sysconfdir}/logrotate.d/%{name}
 %endif
 
 %pre
@@ -91,25 +105,45 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%dir %attr(750, root, consul) %{_sysconfdir}/%{name}.d
+%dir %attr(750, root, consul) %{_sysconfdir}/%{name}
+%attr(640, root, consul) %{_sysconfdir}/%{name}/consul.json-dist
 %dir %attr(750, consul, consul) %{_sharedstatedir}/%{name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
 %{_unitdir}/%{name}.service
 %else
 %{_initrddir}/%{name}
+%{_sysconfdir}/logrotate.d/%{name}
 %endif
 %attr(755, root, root) %{_bindir}/consul
 
 %files ui
-%attr(-, root, consul) %{_sharedstatedir}/%{name}-ui
-%config(noreplace) %attr(640, root, consul) %{_sysconfdir}/%{name}.d/ui.json
+%config(noreplace) %attr(-, root, consul) %{_prefix}/share/%{name}-ui
+%attr(640, root, consul) %{_sysconfdir}/%{name}/consul-ui.json
+
 
 %doc
 
 
-
 %changelog
+* Sun Jan 31 2016 mh <mh@immerda.ch>
+- Bump to v0.6.3
+
+* Fri Dec 11 2015 mh <mh@immerda.ch>
+- Bump to v0.6
+
+* Sun Oct 18 2015 mh <mh@immerda.ch>
+- logrotate logfile on EL6 - fixes #14 & #15
+
+* Tue May 19 2015 nathan r. hruby <nhruby@gmail.com>
+- Bump to v0.5.2
+
+* Fri May 15 2015 Dan <phrawzty@mozilla.com>
+- Bump to v0.5.1
+
+* Mon Mar 9 2015 Dan <phrawzty@mozilla.com>
+- Internal maintenance (bump release)
+
 * Fri Mar 6 2015 mh <mh@immerda.ch>
 - update to 0.5.0
 - fix SysV init on restart

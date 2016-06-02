@@ -3,4 +3,3 @@ BUILD/*
 RPMS/*
 SRPMS/*
 SOURCES/*.zip
-Vagrantfile
