@@ -1,7 +1,7 @@
 %if 0%{?_version:1}
 %define         _verstr      %{_version}
 %else
-%define         _verstr      0.6.3
+%define         _verstr      0.6.4
 %endif
 
 Name:           consul
@@ -126,6 +126,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Jun 28 2016 Konstantin Gribov <grossws@gmail.com>
+- Bump to v0.6.4
+
 * Sun Jan 31 2016 mh <mh@immerda.ch>
 - Bump to v0.6.3
 
