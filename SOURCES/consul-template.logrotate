@@ -1,0 +1,9 @@
+/var/log/consul-template {
+    daily
+    missingok
+    rotate 7
+    compress
+    copytruncate
+    notifempty
+    create 600  consul-template consul-template
+}
