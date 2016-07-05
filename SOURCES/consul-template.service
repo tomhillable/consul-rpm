@@ -1,0 +1,16 @@
+[Unit]
+Description=consul-template Watches a series of templates on the file system, writing new changes when Consul is updated.
+Documentation=http://www.consul-template.io
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=consul-template
+Group=consul-template
+EnvironmentFile=-/etc/sysconfig/consul-template
+ExecStart=/usr/bin/consul-template $CMD_OPTS
+ExecReload=/bin/kill -HUP $MAINPID
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target

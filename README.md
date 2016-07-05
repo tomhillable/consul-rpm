@@ -114,7 +114,10 @@ If you prefer building it with Docker:
 
 # Result
 
-Two RPMs: one each for the Consul binary and the WebUI.
+Three RPMs:
+- consul server
+- consul web UI
+- consul-template
 
 # Run
 

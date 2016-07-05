@@ -1,0 +1,179 @@
+#!/bin/bash
+#
+# consul-template        Manage the consul-template agent
+#
+# chkconfig:   2345 95 95
+# description: consul-template evaluates a series of templates on the file system.
+# processname: consul-template
+# config: /etc/consul-template.d
+# pidfile: /var/run/consul-template.pid
+
+### BEGIN INIT INFO
+# Provides:       consul-template
+# Required-Start: $local_fs $network
+# Required-Stop:
+# Should-Start:
+# Should-Stop:
+# Default-Start: 2 3 4 5
+# Default-Stop:  0 1 6
+# Short-Description: Manage the consul-template agent
+# Description: consul-template watches a series of templates on the file system, writing new changes when  Consul is updated.
+### END INIT INFO
+
+# source function library
+. /etc/rc.d/init.d/functions
+
+prog="consul-template"
+user="consul"
+exec="/usr/bin/$prog"
+pidfile="/var/run/$prog.pid"
+lockfile="/var/lock/subsys/$prog"
+logfile="/var/log/$prog"
+
+# pull in sysconfig settings
+[ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
+
+export GOMAXPROCS=${GOMAXPROCS:-2}
+export MAXWAIT=${MAXWAIT:-10}
+
+start() {
+    [ -x $exec ] || exit 5
+
+    umask 077
+
+    touch $logfile $pidfile
+    chown $user:$user $logfile $pidfile
+
+    echo -n $"Starting $prog: "
+
+    ## holy shell shenanigans, batman!
+    ## daemon can't be backgrounded.  we need the pid of the spawned process,
+    ## which is actually done via runuser thanks to --user.  you can't do "cmd
+    ## &; action" but you can do "{cmd &}; action".
+    daemon \
+        --pidfile=$pidfile \
+        --user=$user \
+        " { $exec $CMD_OPTS &>> $logfile & } ; echo \$! >| $pidfile "
+
+    RETVAL=$?
+
+    [ $RETVAL -eq 0 ] && touch $lockfile
+
+    local pid=$(< ${pidfile})
+    local curwait=0
+    local ready=0
+
+    while checkpid ${pid} && [ $curwait -lt ${MAXWAIT} ] && [ $ready -ne 1 ]; do
+        if netstat -nptl | grep -q "^tcp.*:8400.*LISTEN \+${pid}\/${prog}"; then
+            ready=1
+        else
+           sleep 1
+        fi
+
+        (( count++ ))
+    done
+
+    if [ $ready -eq 1 ]; then
+        RETVAL=0
+        success
+    else
+       RETVAL=1
+       failure
+    fi
+
+    echo
+    return $RETVAL
+}
+
+stop() {
+    echo -n $"Shutting down $prog: "
+    ## graceful shutdown with SIGINT
+    killproc -p $pidfile $exec -INT
+    RETVAL=$?
+
+    if [ $RETVAL -eq 0 ]; then
+        local pid=$(< ${pidfile})
+        local curwait=0
+        local shut=0
+
+        while [ $curwait -lt ${MAXWAIT} ] && [ $shut -ne 1 ]; do
+            if ! checkpid ${pid}; then
+                shut=1
+            else
+                sleep 1
+            fi
+
+            (( count++ ))
+        done
+
+        if [ $shut -ne 1 ]; then
+            RETVAL=125
+        fi
+    fi
+
+    if [ $RETVAL -eq 0 ]; then
+        rm -f $lockfile $pidfile
+        success
+    else
+        failure
+    fi
+
+    echo
+    return $RETVAL
+}
+
+restart() {
+    stop
+    start
+}
+
+reload() {
+    echo -n $"Reloading $prog: "
+    killproc -p $pidfile $exec -HUP
+    echo
+}
+
+force_reload() {
+    restart
+}
+
+rh_status() {
+    status -p "$pidfile" -l $prog $exec
+}
+
+rh_status_q() {
+    rh_status >/dev/null 2>&1
+}
+
+case "$1" in
+    start)
+        rh_status_q && exit 0
+        $1
+        ;;
+    stop)
+        rh_status_q || exit 0
+        $1
+        ;;
+    restart)
+        $1
+        ;;
+    reload)
+        rh_status_q || exit 7
+        $1
+        ;;
+    force-reload)
+        force_reload
+        ;;
+    status)
+        rh_status
+        ;;
+    condrestart|try-restart)
+        rh_status_q || exit 0
+        restart
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|status|restart|condrestart|try-restart|reload|force-reload}"
+        exit 2
+esac
+
+exit $?
