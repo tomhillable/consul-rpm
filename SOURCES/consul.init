@@ -70,7 +70,7 @@ start() {
            sleep 1
         fi
 
-        (( count++ ))
+        (( curwait++ ))
     done
 
     if [ $ready -eq 1 ]; then
