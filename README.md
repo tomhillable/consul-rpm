@@ -10,31 +10,32 @@ Tries to follow the [packaging guidelines](https://fedoraproject.org/wiki/Packag
 
 # Using
 
-Either you can build the RPMs on your own using the SPEC file in this repository
-or you can use the builded RPMs hosted on copr by one of the maintainers.
+Create the RPMs using one of the techniques outlined in the Build section below.
 
-See the [copr-project site](https://copr.fedoraproject.org/coprs/duritong/consul/) for more information on how to use the repository.
+## Pre-built packages
+
+Pre-built packages are maintained via the [Fedora Copr](https://copr.fedoraproject.org/coprs/) system. For more information, please see the [duritong/consul](https://copr.fedoraproject.org/coprs/duritong/consul/) repository on Copr.
 
 # Build
 
-If you have Vagrant installed:
+There are a number of ways to build the `consul` and `consul-ui` RPMs:
+* Manual
+* Vagrant
+* Docker
 
-* Check out this repo.  
-    ```
-    git clone https://github.com/tomhillable/consul-rpm
-    ```
-    
-* Edit Vagrantfile to point to your favourite box (Bento CentOS7 in this example).  
-    ```
-    config.vm.box = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box"
-    ```
-    
-* Vagrant up! The rpms will be copied to working directory after provisioning.  
-    ```
-    vagrant up
-    ```
+Each method ultimately does the same thing - pick the one that is most comfortable for you.
 
-Or, do it manually by building the RPM as a non-root user from your home directory:
+### Version
+
+The version number is hardcoded into the SPEC, however should you so choose, it can be set explicitly by passing an argument to `rpmbuild` directly:
+
+```
+$ rpmbuild --define "_version 0.6.3"
+```
+
+## Manual
+
+Build the RPM as a non-root user from your home directory:
 
 * Check out this repo. Seriously - check it out. Nice.
     ```
@@ -46,7 +47,7 @@ Or, do it manually by building the RPM as a non-root user from your home directo
     sudo yum install rpmdevtools mock
     ```
 
-* Set up your rpmbuild directory tree.
+* Set up your `rpmbuild` directory tree.
     ```
     rpmdev-setuptree
     ```
@@ -67,8 +68,8 @@ Or, do it manually by building the RPM as a non-root user from your home directo
     ```
     VER=`grep Version rpmbuild/SPECS/consul.spec | awk '{print $2}'`
     URL='https://dl.bintray.com/mitchellh/consul'
-    wget $URL/${VER}_linux_amd64.zip -O $HOME/rpmbuild/SOURCES/${VER}_linux_amd64.zip
-    wget $URL/${VER}_web_ui.zip -O $HOME/rpmbuild/SOURCES/${VER}_web_ui.zip
+    wget $URL/consul_${VER}_linux_amd64.zip -O $HOME/rpmbuild/SOURCES/consul_${VER}_linux_amd64.zip
+    wget $URL/consul_${VER}_web_ui.zip -O $HOME/rpmbuild/SOURCES/consul_${VER}_web_ui.zip
     ```
 
 * Build the RPM.
@@ -76,9 +77,47 @@ Or, do it manually by building the RPM as a non-root user from your home directo
     rpmbuild -ba rpmbuild/SPECS/consul.spec
     ```
 
-## Result
+## Vagrant
 
-Two RPMS: one each for the Consul binary and the WebUI.
+If you have Vagrant installed:
+
+* Check out this repo.
+    ```
+    git clone https://github.com/tomhillable/consul-rpm
+    ```
+
+* Edit `Vagrantfile` to point to your favourite box (Bento CentOS7 in this example).
+    ```
+    config.vm.box = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box"
+    ```
+
+* Vagrant up! The RPMs will be copied to working directory after provisioning.
+    ```
+    vagrant up
+    ```
+
+## Docker
+
+If you prefer building it with Docker:
+
+* Build the Docker image. Note that you must amend the `Dockerfile` header if you want a specific OS build (default is `centos7`).
+    ```
+    docker build -t consul:build .
+    ```
+
+* Run the build.
+    ```
+    docker run -v $HOME/consul-rpms:/RPMS consul:build
+    ```
+
+* Retrieve the built RPMs from `$HOME/consul-rpms`.
+
+# Result
+
+Three RPMs:
+- consul server
+- consul web UI
+- consul-template
 
 # Run
 

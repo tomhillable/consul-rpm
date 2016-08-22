@@ -1,5 +1,11 @@
+%if 0%{?_version:1}
+%define         _verstr      %{_version}
+%else
+%define         _verstr      0.6.4
+%endif
+
 Name:           consul
-Version:        0.6.0
+Version:        %{_verstr}
 Release:        1%{?dist}
 Summary:        Consul is a tool for service discovery and configuration. Consul is distributed, highly available, and extremely scalable.
 
@@ -27,6 +33,7 @@ Requires(pre): shadow-utils
 %package ui
 Summary: Consul Web UI
 Requires: consul = %{version}
+BuildArch: noarch
 
 %description
 Consul is a tool for service discovery and configuration. Consul is distributed, highly available, and extremely scalable.
@@ -119,6 +126,12 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Jun 28 2016 Konstantin Gribov <grossws@gmail.com>
+- Bump to v0.6.4
+
+* Sun Jan 31 2016 mh <mh@immerda.ch>
+- Bump to v0.6.3
+
 * Fri Dec 11 2015 mh <mh@immerda.ch>
 - Bump to v0.6
 

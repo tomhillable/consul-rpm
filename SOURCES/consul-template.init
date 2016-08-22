@@ -1,29 +1,29 @@
 #!/bin/bash
 #
-# consul        Manage the consul agent
+# consul-template        Manage the consul-template agent
 #
 # chkconfig:   2345 95 95
-# description: Consul is a tool for service discovery and configuration
-# processname: consul
-# config: /etc/consul.d
-# pidfile: /var/run/consul.pid
+# description: consul-template evaluates a series of templates on the file system.
+# processname: consul-template
+# config: /etc/consul-template.d
+# pidfile: /var/run/consul-template.pid
 
 ### BEGIN INIT INFO
-# Provides:       consul
+# Provides:       consul-template
 # Required-Start: $local_fs $network
 # Required-Stop:
 # Should-Start:
 # Should-Stop:
 # Default-Start: 2 3 4 5
 # Default-Stop:  0 1 6
-# Short-Description: Manage the consul agent
-# Description: Consul is a tool for service discovery and configuration
+# Short-Description: Manage the consul-template agent
+# Description: consul-template watches a series of templates on the file system, writing new changes when  Consul is updated.
 ### END INIT INFO
 
 # source function library
 . /etc/rc.d/init.d/functions
 
-prog="consul"
+prog="consul-template"
 user="consul"
 exec="/usr/bin/$prog"
 pidfile="/var/run/$prog.pid"
@@ -70,7 +70,7 @@ start() {
            sleep 1
         fi
 
-        (( curwait++ ))
+        (( count++ ))
     done
 
     if [ $ready -eq 1 ]; then
