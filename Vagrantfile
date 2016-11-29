@@ -29,7 +29,7 @@ SCRIPT
 
 Vagrant.configure(2) do |config|
 
-  config.vm.box = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box"
+  config.vm.box = ""
 
   config.vm.provision "shell", inline: $rpmbuild_script, privileged: false
 
