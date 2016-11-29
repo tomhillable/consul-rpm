@@ -38,8 +38,8 @@ consul-template watches a series of templates on the file system, writing new ch
 %install
 mkdir -p %{buildroot}/%{_bindir}
 cp consul-template %{buildroot}/%{_bindir}
-mkdir -p %{buildroot}/%{_sysconfdir}/%{name}
-cp %{SOURCE4} %{buildroot}/%{_sysconfdir}/%{name}/consul-template.json-dist
+mkdir -p %{buildroot}/%{_sysconfdir}/%{name}.d
+cp %{SOURCE4} %{buildroot}/%{_sysconfdir}/%{name}.d/consul-template.json-dist
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig
 cp %{SOURCE1} %{buildroot}/%{_sysconfdir}/sysconfig/%{name}
 mkdir -p %{buildroot}/%{_sharedstatedir}/%{name}
@@ -87,8 +87,8 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%dir %attr(750, root, consul-template) %{_sysconfdir}/%{name}
-%attr(640, root, consul-template) %{_sysconfdir}/%{name}/consul-template.json-dist
+%dir %attr(750, root, consul-template) %{_sysconfdir}/%{name}.d
+%attr(640, root, consul-template) %{_sysconfdir}/%{name}.d/consul-template.json-dist
 %dir %attr(750, consul-template, consul-template) %{_sharedstatedir}/%{name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
