@@ -57,27 +57,10 @@ start() {
 
     RETVAL=$?
 
-    [ $RETVAL -eq 0 ] && touch $lockfile
-
-    local pid=$(< ${pidfile})
-    local curwait=0
-    local ready=0
-
-    while checkpid ${pid} && [ $curwait -lt ${MAXWAIT} ] && [ $ready -ne 1 ]; do
-        if netstat -nptl | grep -q "^tcp.*:8400.*LISTEN \+${pid}\/${prog}"; then
-            ready=1
-        else
-           sleep 1
-        fi
-
-        (( count++ ))
-    done
-
-    if [ $ready -eq 1 ]; then
-        RETVAL=0
+    if [ $RETVAL -eq 0 ]; then
+        touch $lockfile
         success
     else
-       RETVAL=1
        failure
     fi
 
