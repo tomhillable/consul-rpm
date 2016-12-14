@@ -1,7 +1,7 @@
 %if 0%{?_version:1}
 %define         _verstr      %{_version}
 %else
-%define         _verstr      0.7.0
+%define         _verstr      0.7.1
 %endif
 
 Name:           consul
@@ -126,7 +126,10 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Wed Sep 21 2016 Rumba <no@email.ext>
+* Wed Dec 14 2016 Rumba <ice4o@hotmail.com>
+- Bump to 0.7.1
+
+* Wed Sep 21 2016 Rumba <ice4o@hotmail.com>
 - Bump to 0.7.0
 
 * Tue Jun 28 2016 Konstantin Gribov <grossws@gmail.com>
