@@ -129,8 +129,9 @@ rm -rf %{buildroot}
 * Tue Nov 29 2016 Michael Mraz <michaelmraz@gmail.com>
 - Bump default version to 0.7.1
 - Change default configs directory to /etc/consul.d and /etc/consul-template.d
+  while the old ones are still supported
 
-* Wed Sep 21 2016 Rumba <no@email.ext>
+* Wed Sep 21 2016 Rumba <ice4o@hotmail.com>
 - Bump to 0.7.0
 
 * Tue Jun 28 2016 Konstantin Gribov <grossws@gmail.com>
