@@ -3,7 +3,7 @@
 Tries to follow the [packaging guidelines](https://fedoraproject.org/wiki/Packaging:Guidelines) from Fedora.
 
 * Binary: `/usr/bin/consul`
-* Config: `/etc/consul/`
+* Config: `/etc/consul.d/`
 * Shared state: `/var/lib/consul/`
 * Sysconfig: `/etc/sysconfig/consul`
 * WebUI: `/usr/share/consul/`
