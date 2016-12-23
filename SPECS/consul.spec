@@ -126,7 +126,7 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Fri Dev 23 2016 Michael Mraz <michaelmraz@gmail.com>
+* Fri Dec 23 2016 Michael Mraz <michaelmraz@gmail.com>
 - Change default configs directory to /etc/consul.d and /etc/consul-template.d
   while the old ones are still supported
 
