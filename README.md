@@ -3,7 +3,7 @@
 Tries to follow the [packaging guidelines](https://fedoraproject.org/wiki/Packaging:Guidelines) from Fedora.
 
 * Binary: `/usr/bin/consul`
-* Config: `/etc/consul/`
+* Config: `/etc/consul.d/`
 * Shared state: `/var/lib/consul/`
 * Sysconfig: `/etc/sysconfig/consul`
 * WebUI: `/usr/share/consul/`
@@ -122,7 +122,7 @@ Three RPMs:
 # Run
 
 * Install the RPM.
-* Put config files in `/etc/consul/`.
+* Put config files in `/etc/consul.d/`.
 * Change command line arguments to consul in `/etc/sysconfig/consul`.
   * Add `-bootstrap` **only** if this is the first server and instance.
 * Start the service and tail the logs `systemctl start consul.service` and `journalctl -f`.
