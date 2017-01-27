@@ -1,12 +1,12 @@
 %if 0%{?_version:1}
 %define         _verstr      %{_version}
 %else
-%define         _verstr      0.7.2
+%define         _verstr      0.7.3
 %endif
 
 Name:           consul
 Version:        %{_verstr}
-Release:        2%{?dist}
+Release:        1%{?dist}
 Summary:        Consul is a tool for service discovery and configuration. Consul is distributed, highly available, and extremely scalable.
 
 Group:          System Environment/Daemons
@@ -126,6 +126,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Jan 26 2017 mh <mh@immerda.ch>
+- Bump to 0.7.3
+
 * Fri Dec 23 2016 Michael Mraz <michaelmraz@gmail.com>
 - Change default configs directory to /etc/consul.d and /etc/consul-template.d
   while the old ones are still supported
