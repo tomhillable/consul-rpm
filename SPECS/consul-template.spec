@@ -1,7 +1,7 @@
 %if 0%{?_version:1}
 %define         _verstr      %{_version}
 %else
-%define         _verstr      0.16.0
+%define         _verstr      0.18.0
 %endif
 
 Name:           consul-template
