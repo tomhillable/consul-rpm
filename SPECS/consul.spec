@@ -53,6 +53,7 @@ Consul comes with support for a beautiful, functional web UI. The UI can be used
 %install
 mkdir -p %{buildroot}/%{_bindir}
 cp consul %{buildroot}/%{_bindir}
+mkdir -p %{buildroot}/%{_sysconfdir}/%{name}
 mkdir -p %{buildroot}/%{_sysconfdir}/%{name}.d
 cp %{SOURCE5} %{buildroot}/%{_sysconfdir}/%{name}.d/consul.json-dist
 cp %{SOURCE6} %{buildroot}/%{_sysconfdir}/%{name}.d/
@@ -105,6 +106,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
+%dir %attr(750, root, consul) %{_sysconfdir}/%{name}
 %dir %attr(750, root, consul) %{_sysconfdir}/%{name}.d
 %attr(640, root, consul) %{_sysconfdir}/%{name}.d/consul.json-dist
 %dir %attr(750, consul, consul) %{_sharedstatedir}/%{name}
