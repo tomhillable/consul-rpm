@@ -105,6 +105,7 @@ rm -rf %{buildroot}
 %changelog
 * Wed Apr 05 2017 mh <mh@immerda.ch>
 - Bumped version to 0.18.2
+- remove legacy location /etc/consul-template/
 * Wed Sep 28 2016 Andy Bohne <andy@andrewbohne.com>
 - Bumped version to 0.16.0
 * Thu Jun 30 2016 Paul Lussier <pllsaph@gmail.com>
