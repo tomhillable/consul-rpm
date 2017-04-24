@@ -1,7 +1,7 @@
 %if 0%{?_version:1}
 %define         _verstr      %{_version}
 %else
-%define         _verstr      0.8.0
+%define         _verstr      0.8.1
 %endif
 
 Name:           consul
@@ -126,6 +126,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Apr 24 2017 mh <mh@immerda.ch>
+- Bump to 0.8.1
+- Fix init script to check for http port to be listening
+
 * Wed Apr 05 2017 mh <mh@immerda.ch>
 - Bump to 0.8.0
 - remove legacy location /etc/consul/
