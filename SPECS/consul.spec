@@ -1,7 +1,7 @@
 %if 0%{?_version:1}
 %define         _verstr      %{_version}
 %else
-%define         _verstr      0.8.1
+%define         _verstr      0.8.3
 %endif
 
 Name:           consul
