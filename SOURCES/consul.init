@@ -11,7 +11,7 @@
 ### BEGIN INIT INFO
 # Provides:       consul
 # Required-Start: $local_fs $network
-# Required-Stop:
+# Required-Stop: $network
 # Should-Start:
 # Should-Stop:
 # Default-Start: 2 3 4 5
