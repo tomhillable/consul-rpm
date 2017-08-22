@@ -1,7 +1,7 @@
 %if 0%{?_version:1}
 %define         _verstr      %{_version}
 %else
-%define         _verstr      0.9.0
+%define         _verstr      0.9.2
 %endif
 
 Name:           consul
@@ -39,7 +39,7 @@ Consul provides several key features:
  - Multi-Datacenter - Consul is built to be datacenter aware, and can support any number of regions without complex configuration.
 
 %prep
-%setup -q -c -b 0
+%setup -q -c
 
 %install
 mkdir -p %{buildroot}/%{_bindir}
@@ -111,6 +111,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Aug 18 2017 leeuwenrjj leeuwenrjj@gmail.com
+- Bump version to 0.9.2
+- Fix issue with prep
+
 * Tue Jul 25 2017 atumasov multibutterbread@gmail.com 
 - Bump version to 0.9.0
 - Remove outdated UI package https://github.com/hashicorp/consul/blob/master/CHANGELOG.md#090-july-20-2017
