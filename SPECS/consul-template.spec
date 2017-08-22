@@ -1,7 +1,7 @@
 %if 0%{?_version:1}
 %define         _verstr      %{_version}
 %else
-%define         _verstr      0.18.2
+%define         _verstr      0.19.0
 %endif
 
 Name:           consul-template
@@ -103,6 +103,8 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Aug 22 2017 mh <mh@immerda.ch> - 0.19.0-1
+- Bumped version to 0.19.0
 * Wed Apr 05 2017 mh <mh@immerda.ch>
 - Bumped version to 0.18.2
 - remove legacy location /etc/consul-template/
