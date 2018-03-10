@@ -1,7 +1,7 @@
 %if 0%{?_version:1}
 %define         _verstr      %{_version}
 %else
-%define         _verstr      1.0.1
+%define         _verstr      1.0.6
 %endif
 
 Name:           consul
@@ -111,6 +111,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sat Mar 10 2018 fmiz fulminemizzega@yahoo.it
+- Bump version to 1.0.6
+
 * Fri Aug 18 2017 leeuwenrjj leeuwenrjj@gmail.com
 - Bump version to 0.9.2
 - Fix issue with prep
