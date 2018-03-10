@@ -16,7 +16,7 @@ Source0:        https://releases.hashicorp.com/%{name}/%{version}/%{name}_%{vers
 Source1:        %{name}.sysconfig
 Source2:        %{name}.service
 Source3:        %{name}.init
-Source4:        %{name}.json
+Source4:        %{name}.hcl
 Source5:        %{name}.logrotate
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
@@ -45,7 +45,7 @@ Consul provides several key features:
 mkdir -p %{buildroot}/%{_bindir}
 cp consul %{buildroot}/%{_bindir}
 mkdir -p %{buildroot}/%{_sysconfdir}/%{name}.d
-cp %{SOURCE4} %{buildroot}/%{_sysconfdir}/%{name}.d/consul.json-dist
+cp %{SOURCE4} %{buildroot}/%{_sysconfdir}/%{name}.d/consul.hcl-dist
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig
 cp %{SOURCE1} %{buildroot}/%{_sysconfdir}/sysconfig/%{name}
 mkdir -p %{buildroot}/%{_sharedstatedir}/%{name}
@@ -94,7 +94,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %dir %attr(750, root, consul) %{_sysconfdir}/%{name}.d
-%attr(640, root, consul) %{_sysconfdir}/%{name}.d/consul.json-dist
+%attr(640, root, consul) %{_sysconfdir}/%{name}.d/consul.hcl-dist
 %dir %attr(750, consul, consul) %{_sharedstatedir}/%{name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
@@ -113,6 +113,7 @@ rm -rf %{buildroot}
 %changelog
 * Sat Mar 10 2018 fmiz fulminemizzega@yahoo.it
 - Bump version to 1.0.6
+- switch config file format to hcl
 
 * Fri Aug 18 2017 leeuwenrjj leeuwenrjj@gmail.com
 - Bump version to 0.9.2
