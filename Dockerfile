@@ -12,4 +12,4 @@ RUN ln -s /root/rpmbuild/RPMS /RPMS
 
 VOLUME ["/RPMS"]
 
-CMD set -x && cd /root && spectool -g -R rpmbuild/SPECS/consul.spec && rpmbuild -ba rpmbuild/SPECS/consul.spec
+CMD set -x && cd /root && spectool -g -R rpmbuild/SPECS/consul.spec && rpmbuild -ba rpmbuild/SPECS/consul.spec && spectool -g -R rpmbuild/SPECS/consul-template.spec && rpmbuild -ba rpmbuild/SPECS/consul-template.spec
