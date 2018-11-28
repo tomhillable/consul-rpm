@@ -1,4 +1,3 @@
-# default build is for CentOS7, change the base image to fit your build.
 FROM centos:centos7
 MAINTAINER Sebastien Le Digabel "sledigabel@gmail.com"
 
