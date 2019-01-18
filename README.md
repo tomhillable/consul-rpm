@@ -100,9 +100,10 @@ If you have Vagrant installed:
 
 If you prefer building it with Docker:
 
-* Build the Docker image. Note that you must amend the `Dockerfile` header if you want a specific OS build (default is `centos7`).
+### Manually
+* Build the Docker image. Note that you must amend the `Dockerfile` header if you want a specific OS build (`centos6` and `centos7` are currently included).
     ```
-    docker build -t consul:build .
+    docker build -t consul:build ./docker/centos7/
     ```
 
 * Run the build.
@@ -111,6 +112,21 @@ If you prefer building it with Docker:
     ```
 
 * Retrieve the built RPMs from `$HOME/consul-rpms`.
+
+
+### Docker compose
+Alternatively, there is a docker compose file included with this repo that
+automates the process of building the Docker image and running commands.
+
+* Build with:
+    ```shell
+    docker-compose run <centos6|centos7>
+    ```
+
+* Retrieve build rpms from `./RPMS`.
+
+Currently, the docker-compose services can be either `centos6` or `centos7` for
+each respective OS version.
 
 # Result
 
