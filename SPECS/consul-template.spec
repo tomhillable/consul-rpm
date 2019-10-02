@@ -1,7 +1,7 @@
 %if 0%{?_version:1}
 %define         _verstr      %{_version}
 %else
-%define         _verstr      0.20.0
+%define         _verstr      0.22.0
 %endif
 
 Name:           consul-template
@@ -103,6 +103,8 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Oct 01 2019 Martin Merfort <martin.merfort@sixt.com>
+- Bump version to 0.22.0
 * Sun Feb 24 2019 Ilya Voronin <ivoronin@gmail.com>
 - Bump version to 0.20.0
 * Fri Nov 30 2018 Michael Mraz <michaelmraz@gmail.com>
