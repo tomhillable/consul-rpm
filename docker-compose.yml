@@ -2,16 +2,29 @@
 
 version: '3'
 services:
-  centos6:
-    build:
-      context: .
-      dockerfile: ./docker/centos6/Dockerfile
-    volumes:
-      - ./RPMS:/RPMS
+    centos6:
+        environment:
+            - RPMVER
+        build:
+            context: .
+            dockerfile: ./docker/centos6/Dockerfile
+        volumes:
+            - ../centos6:/RPMS
 
-  centos7:
-    build:
-      context: .
-      dockerfile: ./docker/centos7/Dockerfile
-    volumes:
-      - ./RPMS:/RPMS
+    centos7:
+        environment:
+            - RPMVER
+        build:
+            context: .
+            dockerfile: ./docker/centos7/Dockerfile
+        volumes:
+            - ../centos7:/RPMS
+
+    amzn2018:
+        environment:
+            - RPMVER
+        build:
+            context: .
+            dockerfile: ./docker/centos7/Dockerfile
+        volumes:
+            - ../amzn2018:/RPMS

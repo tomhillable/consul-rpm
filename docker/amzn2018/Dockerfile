@@ -1,5 +1,5 @@
-FROM centos:centos7
-MAINTAINER Sebastien Le Digabel "sledigabel@gmail.com"
+FROM amazonlinux:1
+MAINTAINER Levels Beyond
 
 ENV RPMVER 1.7.2
 
