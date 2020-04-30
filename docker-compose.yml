@@ -4,7 +4,8 @@ version: '3'
 services:
     centos6:
         environment:
-            - RPMVER
+            - CONSULVER
+            - TEMPLATEVER
         build:
             context: .
             dockerfile: ./docker/centos6/Dockerfile
@@ -13,7 +14,8 @@ services:
 
     centos7:
         environment:
-            - RPMVER
+            - CONSULVER
+            - TEMPLATEVER
         build:
             context: .
             dockerfile: ./docker/centos7/Dockerfile
@@ -22,7 +24,8 @@ services:
 
     amzn2018:
         environment:
-            - RPMVER
+            - CONSULVER
+            - TEMPLATEVER
         build:
             context: .
             dockerfile: ./docker/centos7/Dockerfile
